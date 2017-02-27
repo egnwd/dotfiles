@@ -1,0 +1,11 @@
+[user]
+	name = Elliot Greenwood
+	email = hello@elliotgreenwood.co.uk
+[core]
+	editor = /usr/local/bin/vim
+	excludesfile = /Users/egnwd/.gitignore_global
+[alias]
+        fixup = commit --fixup
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+[rebase]
+	autosquash = true
