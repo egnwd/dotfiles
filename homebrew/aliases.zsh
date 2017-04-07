@@ -1,1 +1,4 @@
-eval $(thefuck --alias)
+if (( $+commands[thefuck] ))
+then
+  eval "$(thefuck --alias)"
+fi
