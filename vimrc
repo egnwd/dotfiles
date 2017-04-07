@@ -1,3 +1,6 @@
+set nocompatible
+filetype off
+
 set wrap
 set linebreak
 set nolist
@@ -10,21 +13,10 @@ set smartcase " enable smart-case search
 set ignorecase  " always case-insensitive
 set incsearch " searches for strings incrementally
 
-set autoindent  " auto-indent new lines
-set expandtab " use spaces instead of tabs
-set shiftwidth=2  " number of auto-indent spaces
-set smartindent " enable smart-indent
-set smarttab  " enable smart-tabs
-set softtabstop=2 " number of spaces per Tab
-
 "" Advanced
 set ruler " Show row and column ruler information
-"set showtabline=2 " show tab bar
 
 set undolevels=1000 " Number of undo levels
-
-set nocompatible
-filetype off
 
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -45,12 +37,14 @@ Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'sheerun/vim-polyglot'
 Plugin 'kien/ctrlp.vim'
 Plugin 'scrooloose/syntastic'
-Plugin 'fatih/vim-go', {'do': ':GoInstallBinaries'}
 Plugin 'vim-scripts/gitignore'
 Plugin 'rust-lang/rust.vim'
 Plugin 'lifepillar/vim-wwdc16-theme'
 Plugin 'honza/vim-snippets'
 Plugin 'SirVer/ultisnips'
+Plugin 'ekalinin/Dockerfile.vim'
+Plugin 'fatih/vim-go'
+Plugin 'tpope/vim-surround'
 
 call vundle#end()
 filetype plugin indent on
@@ -60,6 +54,11 @@ let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<c-b>"
 let g:UltiSnipsEditSplit="vertical"
+
+let g:go_fmt_options = "gofmt"
+let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
+let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
+let g:syntastic_quiet_messages = { "regex": 'invalid-name\|missing-docstring' }
 
 " vim-airline
 let g:airline_theme = 'base16_google'
@@ -97,6 +96,13 @@ else
   let g:airline#extensions#tabline#left_alt_sep = ''
 endif
 let g:tmux_navigator_disable_when_zoomed = 1
+
+set autoindent  " auto-indent new lines
+set expandtab " use spaces instead of tabs
+set shiftwidth=2  " number of auto-indent spaces
+set smartindent " enable smart-indent
+set smarttab  " enable smart-tabs
+set softtabstop=2 " number of spaces per Tab
 "*****************************************************************************
 "" Abbreviations
 "*****************************************************************************
@@ -143,7 +149,6 @@ nmap <leader>c :bp <baR> bd #<CR>
 nmap <leader>bl :ls<cr>
 
 " Add line numbers
-set rnu
 set nu
 
 " Highlight search results
@@ -182,6 +187,9 @@ vmap <Leader>p "+p
 vmap <Leader>P "+p
 
 set clipboard=unnamed
+if $TMUX == ''
+  set clipboard+=unnamed
+endif
 
 autocmd BufRead,bufnewFile *.erb set filetype=eruby.html
 
