@@ -4,25 +4,19 @@
 [hub]
         protocol = https
 [alias]
-        co = checkout
-        promote = !$ZSH/bin/git-promote
-        wtf     = !$ZSH/bin/git-wtf
-        rank-contributors = !$ZSH/bin/git-rank-contributors
+        fixup   = commit --fixup
+        promote = !$DOT/bin/git-promote
+        wtf     = !$DOT/bin/git-wtf
+        track   = !$DOT/bin/git-track
+        undo    = !$DOT/bin/git-undo
         count   = !git shortlog -sn
 [color]
         diff = auto
         status = auto
         branch = auto
-        ui = true
 [core]
         excludesfile = ~/.gitignore
         editor = vim
-[apply]
-        whitespace = nowarn
-[mergetool]
-        keepBackup = false
-[difftool]
-        prompt = false
 [help]
         autocorrect = 1
 [push]
@@ -31,3 +25,5 @@
         #
         # Setting to git 2.0 default to suppress warning message
         default = simple
+[rebase]
+	autosquash = true
