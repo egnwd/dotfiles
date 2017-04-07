@@ -4,14 +4,14 @@
 #
 # Type:
 #
-#   c <tab>
+#   goto <tab>
 #
 # ...to autocomplete on all of your projects in the directories specified in
-# `functions/_c`. Typically I'm using it like:
+# `functions/_goto`. Typically I'm using it like:
 #
-#    c holm<tab>/bo<tab>
+#    goto egn<tab>/fo<tab>
 #
-# ...to quickly jump into holman/boom, for example.
+# ...to quickly jump into egnwd/foo, for example.
 #
 # This also accounts for how Go structures its projects. For example, it will
 # autocomplete both on $PROJECTS, and also assume you want to autocomplete on
