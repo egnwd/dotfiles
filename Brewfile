@@ -1,6 +1,7 @@
 cask_args appdir: '/Applications'
 
 tap 'homebrew/bundle'
+tap 'homebrew/science'
 
 brew 'ack'
 brew 'carthage'
@@ -28,7 +29,7 @@ brew 'python3'
 brew 'ranger'
 brew 'reattach-to-user-namespace'
 brew 'rlwrap'
-brew 'ruby'
+brew 'ruby-build'
 brew 'rbenv'
 brew 'tbb'
 brew 'thefuck'

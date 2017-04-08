@@ -122,7 +122,7 @@ nnoremap <Tab> :bn<cr>
 nnoremap <S-Tab> :bp<cR>
 
 " Set Theme
-colorscheme wwdc16
+silent! colorscheme wwdc16
 set bg=dark
 
 " Don't create annoying files

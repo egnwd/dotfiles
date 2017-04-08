@@ -38,9 +38,9 @@ setup_gitconfig () {
       git_credential='osxkeychain'
     fi
 
-    user ' - What is your github author name?'
+    user ' › What is your github author name?'
     read -e git_authorname
-    user ' - What is your github author email?'
+    user ' › What is your github author email?'
     read -e git_authoremail
 
     sed -e "s/AUTHORNAME/$git_authorname/g" -e "s/AUTHOREMAIL/$git_authoremail/g" -e "s/GIT_CREDENTIAL_HELPER/$git_credential/g" git/gitconfig.local.symlink.example > git/gitconfig.local.symlink
@@ -153,4 +153,9 @@ then
 fi
 
 echo ''
-echo '  All installed!'
+info 'you need to:'
+info '  › install \033[00;34msicstus\033[0m'
+info '  › install \033[00;34mmatlab\033[0m'
+info '  › set up \033[00;34mssh keys\033[0m'
+info '  › set up \033[00;34mgpg keys\033[0m'
+info '  › make \033[00;34mterminal/egnwd.terminal\033[0m default'
