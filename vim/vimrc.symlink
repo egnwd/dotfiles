@@ -163,11 +163,11 @@ set backspace=indent,eol,start
 " Disable arrows, get used to hjkl
 noremap <Left> <nop>
 noremap <Down> <nop>
-noremap <Up> <NOp>
+noremap <Up> <nop>
 noremap <Right> <nop>
 inoremap <Left> <nop>
 inoremap <Down> <nop>
-inoremap <Up> <Nop>
+inoremap <Up> <nop>
 inoremap <Right> <nop>
 
 inoremap <Esc> <nop>
@@ -206,6 +206,7 @@ autocmd VimEnter * wincmd p
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 au BufRead,BufNewfile *.hamlc set ft=haml
+" au BufRead,BufNewfile *.tex set ft=tex
 autocmd BufRead,BufNewFile *.tex setlocal spell spelllang=en_gb
 
 "autocmd FileType ruby setlocal tabstop=2 shiftwidth=2 softtabstop=2
@@ -214,15 +215,14 @@ autocmd BufRead,BufNewFile *.tex setlocal spell spelllang=en_gb
 "autocmd FileType javascript setlocal tabstop=2 shiftwidth=2 softtabstop=2
 "autocmd FileType java setlocal tabstop=4 shiftwidth=4 softtabstop=4
 
-"autocmd FileType go setlocal tabstop=8 softtabstop=8 shiftwidth=8 noexpandtab
+autocmd FileType go setlocal tabstop=4 softtabstop=4 shiftwidth=4 noexpandtab
 
 set shell=bash
 
 set exrc
 set secure
 
-set mouse=nicra
-set ttymouse=sgr
+set mouse=nvr
 
 nnoremap <Leader>w :w<CR>
 

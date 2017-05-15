@@ -13,6 +13,8 @@ bind C-Space copy-mode
 
 bind r source-file ~/.tmux.conf \; display-message " Config reloaded..".
 
+set -g mouse-utf8 off
+
 # start with window 1 (instead of 0)
 set -g base-index 1
 
