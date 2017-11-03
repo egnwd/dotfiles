@@ -1,0 +1,12 @@
+#!/bin/zsh
+#
+# This lets you pretty print json from a get request.
+#
+# Type:
+#
+#   pretty <uri>
+#
+
+if [ ! -z "$1" ]; then
+  curl $1 2> /dev/null | ramda --pretty identity
+fi

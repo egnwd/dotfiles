@@ -1,29 +1,44 @@
 # Local/private config goes in the include
 [include]
-        path = ~/.gitconfig.local
+  path = ~/.gitconfig.local
 [hub]
-        protocol = https
+  protocol = https
 [alias]
-        fixup   = commit --fixup
-        promote = !$DOT/bin/git-promote
-        wtf     = !$DOT/bin/git-wtf
-        track   = !$DOT/bin/git-track
-        undo    = !$DOT/bin/git-undo
-        count   = !git shortlog -sn
+  fixup   = commit --fixup
+  promote = !$DOT/bin/git-promote
+  wtf     = !$DOT/bin/git-wtf
+  track   = !$DOT/bin/git-track
+  undo    = !$DOT/bin/git-undo
+  count   = !git shortlog -sn
+  on      = !$DOT/bin/git-on
 [color]
-        diff = auto
-        status = auto
-        branch = auto
+  diff = auto
+  status = auto
+  branch = auto
 [core]
-        excludesfile = ~/.gitignore
-        editor = vim
+  excludesfile = ~/.gitignore
+  editor = vim
 [help]
-        autocorrect = 1
+  autocorrect = 1
 [push]
         # See `git help config` (search for push.default)
         # for more information on different options of the below setting.
         #
         # Setting to git 2.0 default to suppress warning message
-        default = simple
+  default = simple
 [rebase]
-	autosquash = true
+  autosquash = true
+[merge]
+  tool = vimdiff2
+  conflictstyle = diff3
+[mergetool]
+  prompt = false
+[diff]
+  tool = vimdiff2
+  conflictstyle = diff3
+[difftool]
+  prompt = false
+;[commit]
+	;gpgsign = true
+;[gpg]
+	;program = gpg2

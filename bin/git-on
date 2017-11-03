@@ -1,0 +1,10 @@
+#!/bin/sh
+#
+# On displays the commits from a particular day
+#
+
+if [ -z "$1" ]; then
+  echo "Please provide a date";
+else
+  git log --pretty=format:'%Cgreen%<(20,trunc)%an:%Creset %s' --after="$1 00:00" --before="$1 23:59"
+fi

@@ -22,7 +22,9 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'VundleVim/vundle.vim'
-Plugin 'tpope/vim-sensible'
+if !has('nvim')
+  Plugin 'tpope/vim-sensible'
+endif
 Plugin 'sjbach/lusty'
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/nerdcommenter'
@@ -35,7 +37,7 @@ Plugin 'kana/vim-textobj-line'
 Plugin 'kana/vim-textobj-user'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'sheerun/vim-polyglot'
-Plugin 'kien/ctrlp.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'scrooloose/syntastic'
 Plugin 'vim-scripts/gitignore'
 Plugin 'rust-lang/rust.vim'
@@ -44,18 +46,25 @@ Plugin 'honza/vim-snippets'
 Plugin 'SirVer/ultisnips'
 Plugin 'ekalinin/Dockerfile.vim'
 Plugin 'fatih/vim-go'
+Plugin 'AndrewRadev/splitjoin.vim'
 Plugin 'tpope/vim-surround'
+Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plugin 'mileszs/ack.vim'
 
 call vundle#end()
 filetype plugin indent on
 
+" ag
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
+let g:deoplete#enable_at_startup = 1
 " snippets
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<c-b>"
 let g:UltiSnipsEditSplit="vertical"
 
-let g:go_fmt_options = "gofmt"
 let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
 let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
 let g:syntastic_quiet_messages = { "regex": 'invalid-name\|missing-docstring' }
@@ -97,6 +106,10 @@ else
 endif
 let g:tmux_navigator_disable_when_zoomed = 1
 
+" go lang
+let s:tlist_def_go_settings = 'go;g:enum;s:struct;u:union;t:type;' .
+                            \ 'v:variable;f:function'
+let g:netrw_liststyle = 3
 set autoindent  " auto-indent new lines
 set expandtab " use spaces instead of tabs
 set shiftwidth=2  " number of auto-indent spaces
@@ -174,13 +187,33 @@ inoremap <Esc> <nop>
 inoremap jk <Esc>
 inoremap kj <Esc>
 
+" Go quickfix settings
+let g:go_fmt_command = "goimports"
+map <C-n> :cnext<CR>
+map <C-m> :cprevious<CR>
+nnoremap <leader>a :cclose<CR>
+let g:go_list_type = "quickfix"
+autocmd FileType go nmap <leader>t  <Plug>(go-test)
+autocmd FileType go nmap <leader>d  :GoDoc<CR>
+autocmd FileType go nmap <leader>i  :GoDef<CR>
+" run :GoBuild or :GoTestCompile based on the go file
+function! s:build_go_files()
+  let l:file = expand('%')
+  if l:file =~# '^\f\+_test\.go$'
+    call go#cmd#Test(0, 1)
+  elseif l:file =~# '^\f\+\.go$'
+    call go#cmd#Build(0)
+  endif
+endfunction
+
+autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
+
 " Disable annoying beeping
 set noerrorbells
 set vb t_vb=
 
 " Copy Paste
 vmap <Leader>y "+y
-vmap <Leader>d "+d
 nmap <Leader>p "+p
 nmap <Leader>P "+p
 vmap <Leader>p "+p
@@ -208,7 +241,7 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 au BufRead,BufNewfile *.hamlc set ft=haml
 " au BufRead,BufNewfile *.tex set ft=tex
 autocmd BufRead,BufNewFile *.tex setlocal spell spelllang=en_gb
-
+au BufWritePost *.go :GoTest
 "autocmd FileType ruby setlocal tabstop=2 shiftwidth=2 softtabstop=2
 "autocmd FileType sh setlocal tabstop=2 shiftwidth=2 softtabstop=2
 "autocmd FileType jade setlocal tabstop=2 shiftwidth=2 softtabstop=2
@@ -231,6 +264,7 @@ noremap <Leader>h :<c-u>split<CR>
 noremap <Leader>v :<c-u>vsplit<CR>
 
 "" Clean search (highlight)
-nnoremap <silent> <leader><space> :noh<CR>
+nnoremap <silent> <leader><leader> :noh<CR>
 
+nnoremap <leader>. :CtrlPTag<cr>
 source ~/.vimrc.local
