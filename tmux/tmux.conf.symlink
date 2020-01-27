@@ -155,3 +155,5 @@ set -g message-fg colour232
 set -g message-bg colour166
 
 # }
+
+set-option -sg escape-time 10

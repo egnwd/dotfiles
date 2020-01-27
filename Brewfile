@@ -4,7 +4,6 @@ tap 'homebrew/bundle'
 tap 'homebrew/science'
 
 brew 'ack'
-brew 'carthage'
 brew 'cmake'
 brew 'erlang'
 brew 'git'

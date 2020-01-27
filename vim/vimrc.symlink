@@ -25,6 +25,7 @@ Plugin 'VundleVim/vundle.vim'
 if !has('nvim')
   Plugin 'tpope/vim-sensible'
 endif
+Plugin 'airblade/vim-gitgutter'
 Plugin 'sjbach/lusty'
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/nerdcommenter'
@@ -50,6 +51,9 @@ Plugin 'AndrewRadev/splitjoin.vim'
 Plugin 'tpope/vim-surround'
 Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plugin 'mileszs/ack.vim'
+Plugin 'eagletmt/ghcmod-vim'
+Plugin 'leafgarland/typescript-vim'
+Plugin 'Shougo/vimproc.vim', {'do' : 'make'}
 
 call vundle#end()
 filetype plugin indent on
@@ -86,9 +90,9 @@ let g:airline_section_z=''
 if !exists('g:airline_powerline_fonts')
   let g:airline#extensions#tabline#left_sep = ' '
   let g:airline#extensions#tabline#left_alt_sep = '|'
-  let g:airline_left_sep          = '▶'
+  let g:airline_left_sep          = '◣'
   let g:airline_left_alt_sep      = '»'
-  let g:airline_right_sep         = '◀'
+  let g:airline_right_sep         = '◢'
   let g:airline_right_alt_sep     = '«'
   let g:airline#extensions#branch#prefix     = '⎇' "➔, ➥, ⎇
   let g:airline#extensions#readonly#symbol   = '⊘'
@@ -224,10 +228,14 @@ if $TMUX == ''
   set clipboard+=unnamed
 endif
 
+autocmd BufRead,bufnewFile *.lp set filetype=gringo
+autocmd BufRead,bufnewFile *.las set filetype=gringo
+autocmd BufRead,bufnewFile *.fs set filetype=fsharp
+
 autocmd BufRead,bufnewFile *.erb set filetype=eruby.html
 
 " NERDTree settings
-let NERDTreeIgnore = ['\.pyc$', '^__pycache__$', '\~$', '\.o$', '\.d$']
+let NERDTreeIgnore = ['\.pyc$', '^__pycache__$', '\~$', '\.o$', '\.d$', '\.run\.xml$', '\.lot$', '\.lol$', '\.blg$', '\.auxlock$', '\.fdb_latexmk$', '\.bbl$', '\.lof$', '\.toc$' ]
 let g:NERDTreeShowbookmarks=1
 let g:nerdtree_tabs_focus_on_files=1
 let g:NERDTreeMapopeninTabSilent = '<RightMouse>'
@@ -238,8 +246,12 @@ autocmd VimEnter * NERDTree
 autocmd VimEnter * wincmd p
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
+autocmd FileType typescript :set makeprg=tsc
+autocmd QuickFixCmdPost [^l]* nested cwindow
+autocmd QuickFixCmdPost    l* nested lwindow
+
 au BufRead,BufNewfile *.hamlc set ft=haml
-" au BufRead,BufNewfile *.tex set ft=tex
+au BufRead,BufNewfile *.tex set ft=tex
 autocmd BufRead,BufNewFile *.tex setlocal spell spelllang=en_gb
 au BufWritePost *.go :GoTest
 "autocmd FileType ruby setlocal tabstop=2 shiftwidth=2 softtabstop=2
@@ -259,6 +271,9 @@ set mouse=nvr
 
 nnoremap <Leader>w :w<CR>
 
+let g:NERDCustomDelimiters = {'gringo': { 'left': '%', 'leftAlt': '%*', 'rightAlt': '*%'}}
+let g:NERDSpaceDelims = 1
+
 "" Split
 noremap <Leader>h :<c-u>split<CR>
 noremap <Leader>v :<c-u>vsplit<CR>
@@ -268,3 +283,12 @@ nnoremap <silent> <leader><leader> :noh<CR>
 
 nnoremap <leader>. :CtrlPTag<cr>
 source ~/.vimrc.local
+let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
+
+"" Haskell
+
+let g:syntastic_haskell_ghc_mod_exec = '/Users/egnwd/.local/bin/ghc-mod'
+map <silent> tw :GhcModTypeInsert<CR>
+map <silent> ts :GhcModSplitFunCase<CR>
+map <silent> tq :GhcModType<CR>
+map <silent> te :GhcModTypeClear<CR>
