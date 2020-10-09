@@ -235,7 +235,7 @@ autocmd BufRead,bufnewFile *.fs set filetype=fsharp
 autocmd BufRead,bufnewFile *.erb set filetype=eruby.html
 
 " NERDTree settings
-let NERDTreeIgnore = ['\.pyc$', '^__pycache__$', '\~$', '\.o$', '\.d$', '\.run\.xml$', '\.lot$', '\.lol$', '\.blg$', '\.auxlock$', '\.fdb_latexmk$', '\.bbl$', '\.lof$', '\.toc$' ]
+let NERDTreeIgnore = ['\.pyc$', '^__pycache__$', '\~$', '\.o$', '\.d$', '\.run\.xml$', '\.lot$', '\.lol$', '\.blg$', '\.auxlock$', '\.fdb_latexmk$', '\.bbl$', '\.lof$', '\.toc$', '\.aux$', '\.fls$', '\.snm$', '\.nav$' ]
 let g:NERDTreeShowbookmarks=1
 let g:nerdtree_tabs_focus_on_files=1
 let g:NERDTreeMapopeninTabSilent = '<RightMouse>'
