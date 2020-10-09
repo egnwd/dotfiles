@@ -1,0 +1,126 @@
+#compdef -p (clasp|gringo|clingo|iclingo)*
+
+typeset -A opt_args
+local arguments
+local name
+
+arguments=()
+name="$(basename "$words[1]")"
+
+case "$name" in
+	(clasp|clingo|iclingo)*)
+arguments=(
+	$arguments
+# basic options
+	"(--stats)--stats[Print extended statistics]"
+	"(--quiet -q)"{--quiet,-q}"[Do not print models]"
+	"(--asp09)--asp09[Write output in ASP Competition'09 format]"
+	"(--time-limit)--time-limit=[Set time limit to n seconds]:seconds"
+	"(--lemma-out)--lemma-out=[Write learnt lemmas to file on exit]:file:_files"
+	"(--lemma-in)--lemma-in=[Read additional clauses from file]:file:_files"
+
+# lookback options
+	"(--restarts -r)"{--restarts=,-r+}"[Configure restart policy]:policy"
+	"(--local-restarts)--local-restarts[Enable Ryvchin et al.'s local restarts]"
+	"(--bounded-restarts)--bounded-restarts[Enable (bounded) restarts during model enumeration]"
+	"(--reset-restarts)--reset-restarts[Reset restart strategy during model enumeration]"
+	"(--save-progress)--save-progress=[Enable RSat-like progress saving on backjumps]:integer"
+	"(--shuffle -s)"{--shuffle=,-s+}"[Configure shuffling after restarts]:policy"
+	"(--deletion -d)"{--deletion=,-d+}"[Configure size of learnt nogood database]:policy"
+	"(--reduce-on-restart)--reduce-on-restart[Delete some learnt nogoods after every restart]"
+	"(--estimate)--estimate[Use estimated problem complexity to init learnt db]"
+	"(--strengthen)--strengthen=[Configure conflict nogood strengthening]:policy:(bin tern all no)"
+	"(--recursive-str)--recursive-str[Enable MiniSAT-like conflict nogood strengthening]"
+	"(--loops)--loops=[Configure representation and learning of loop formulas]:policy:(common distinct shared no)"
+	"(--contraction)--contraction=[Configure (temporary) contraction of learnt nogoods]:integer"
+
+# search options:
+	"(--no-lookback)--no-lookback[Disable lookback strategies (learning, backjumping,...)]"
+	"(--lookahead)--lookahead=[Configure failed-literal detection (fld)]:policy:(atom body hybrid no)"
+	"(--initial-lookahead=)--initial-lookahead=[Restrict fld to a fixed number of decisions]:integer"
+	"(--heuristic)--heuristic=[Configure decision heuristic]:policy:(Berkmin Vmtf Vsids Unit None)"
+	"(--initial-lookahead=)--initial-lookahead=[Restrict fld to a fixed number of decisions]:integer"
+	"(--rand-freq)--rand-freq=[Make random decisions with the given probability]:float"
+	"(--rand-prob)--rand-prob=[Configure random probing]"
+	"(--rand-watches)--rand-watches=[Configure watched literal initialization]:policy:(yes no)"
+
+# general options
+	"(--number -n)"{--number=,-n+}"[Enumerate atomost the given number of models (0 for all)]:integer"
+	"(--seed)--seed=[Set random number generator's seed]:integer"
+	"(--solution-recording)--solution-recording[Add conflicts for computed models]"
+	"(--restart-on-model)--restart-on-model[Restart (instead of backtrack) after each model]"
+	"(--project)--project[Project models to named atoms in enumeration mode]"
+	"(--brave)--brave[Compute brave consequences]"
+	"(--cautious)--cautious[Compute cautious consequences]"
+	"(--pre)--pre[Run ASP preprocessor and exit]"
+	"(--opt-all)--opt-all[Compute all optimal models]"
+	"(--opt-ignore)--opt-ignore[Ignore minimize statements]"
+	"(--opt-heu)--opt-heu[Consider minimize statements in heuristics]"
+	"(--opt-value)--opt-value=[Initialize objective function(s)]:integer list"
+	"(--supp-models)--supp-models[Compute supported models (disable unfounded set check)]"
+	"(--trans-ext)--trans-ext=[Configure handling of Lparse-like extended rules]:policy:(all choice card weight integ dynamic no)"
+	"(--eq)--eq=[Configure equivalence preprocessing]:integer"
+	"(--backprop)--backprop[Enable backpropagation in ASP-preprocessing]"
+	"(--sat-prepro)--sat-prepro=[Configure SatELite-like preprocessing]:policy"
+)
+	;;
+esac
+
+case "$name" in
+	(gringo|clingo|iclingo)*)
+arguments=(
+	$arguments
+# gringo options
+	{--const,-c}"[Replace constant <c> by value <v>]:<c>=<v>"
+	"--gstats[Print extended statistics]"
+	"(--dep-graph)--dep-graph=[Dump program dependency graph to file]:file:_files"
+	"(--text -t)"{--text,-t}"[Print plain text format]"
+	"(--reify)--reify[Print reified text format]"
+	"(--lparse -l)"{--lparse,-l}"[Print Lparse format]"
+	"(--compat)--compat[Improve compatibility with lparse]"
+	"(--ground -g)"{--ground,-g}"[Enable lightweight mode for ground input]"
+	"(--shift)--shift[Shift disjunctions into the body]"
+	"(--body-order)--body-order=[Configure body order heuristic]:policy:(basic unify)"
+	"(--ifixed)--ifixed=[Fix number of incremental steps]:number"
+	"(--iexpand)--iexpand=[Limits the expansion of terms]:policy:(all depth)"
+)
+	;;
+esac
+
+case "$name" in
+	clingo*)
+arguments=(
+	$arguments
+	"(--clasp --clingo)--clasp[Run in Clasp mode]"
+)
+	;;
+esac
+
+case "$name" in
+	iclingo*)
+arguments=(
+	$arguments
+	"(--clasp --clingo)--clingo[Run in Clingo mode]"
+	"(--istats)--istats[Print statistics for each incremental step]"
+	"(--imin)--imin=[Set minimum number of incremental solve steps]:number"
+	"(--imax)--imax=[Set maximum number of incremental solve steps]:number"
+	"(--istop)--istop=[Configure termination condition]:policy:(sat unsat)"
+	"(--iquery)--iquery=[Set start solving step]:number"
+	"(--ilearnt)--ilearnt=[Configure persistence of learnt nogoods]:policy:(keep forget)"
+	"(--iheuristic)--iheuristic=[Configure persistence of heuristic information]:policy:(keep forget)"
+)
+	;;
+esac
+
+arguments=(
+	$arguments
+# basic options
+	"(- :)"{-h,--help}"[Print help information and exit]"
+	"(- :)"{--version,-v}"[Print version information and exit]"
+	"(--verbose -V)--verbose=[Set verbosity level]:integer"
+	"(--verbose -V)-V[Set verbose output]"
+# files
+	"*:files:_files"
+)
+
+_arguments -s $arguments
