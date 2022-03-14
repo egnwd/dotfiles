@@ -26,34 +26,31 @@ if !has('nvim')
   Plugin 'tpope/vim-sensible'
 endif
 Plugin 'airblade/vim-gitgutter'
-Plugin 'sjbach/lusty'
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'majutsushi/tagbar'
 Plugin 'vim-airline/vim-airline'
 Plugin 'bronson/vim-trailing-whitespace'
 Plugin 'vim-airline/vim-airline-themes'
-Plugin 'kana/vim-textobj-entire'
-Plugin 'kana/vim-textobj-line'
-Plugin 'kana/vim-textobj-user'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'sheerun/vim-polyglot'
 Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'scrooloose/syntastic'
+" Plugin 'scrooloose/syntastic'
 Plugin 'vim-scripts/gitignore'
-Plugin 'rust-lang/rust.vim'
 Plugin 'lifepillar/vim-wwdc16-theme'
 Plugin 'honza/vim-snippets'
 Plugin 'SirVer/ultisnips'
 Plugin 'ekalinin/Dockerfile.vim'
-Plugin 'fatih/vim-go'
-Plugin 'AndrewRadev/splitjoin.vim'
-Plugin 'tpope/vim-surround'
 Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plugin 'mileszs/ack.vim'
-Plugin 'eagletmt/ghcmod-vim'
 Plugin 'leafgarland/typescript-vim'
 Plugin 'Shougo/vimproc.vim', {'do' : 'make'}
+Plugin 'autozimu/LanguageClient-neovim', {'branch': 'next', 'do': 'bash install.sh'}
+Plugin 'ndmitchell/ghcid', { 'rtp': 'plugins/nvim' }
+Plugin 'prettier/vim-prettier', {
+  \ 'do': 'yarn install',
+  \ 'branch': 'release/0.x'
+  \ }
 
 call vundle#end()
 filetype plugin indent on
@@ -69,16 +66,16 @@ let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<c-b>"
 let g:UltiSnipsEditSplit="vertical"
 
-let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
-let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
-let g:syntastic_quiet_messages = { "regex": 'invalid-name\|missing-docstring' }
+" let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
+" let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
+" let g:syntastic_quiet_messages = { "regex": 'invalid-name\|missing-docstring' }
 
 " vim-airline
 let g:airline_theme = 'base16_google'
-let g:airline#extensions#syntastic#enabled = 1
-let g:airline#extensions#branch#enabled = 1
+let g:airline#extensions#syntastic#enabled = 0
+let g:airline#extensions#branch#enabled = 0
 let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tagbar#enabled = 1
+let g:airline#extensions#tagbar#enabled = 0
 let g:airline_skip_empty_sections = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
 " vim-airline
@@ -90,9 +87,9 @@ let g:airline_section_z=''
 if !exists('g:airline_powerline_fonts')
   let g:airline#extensions#tabline#left_sep = ' '
   let g:airline#extensions#tabline#left_alt_sep = '|'
-  let g:airline_left_sep          = '◣'
+  let g:airline_left_sep          = ''
   let g:airline_left_alt_sep      = '»'
-  let g:airline_right_sep         = '◢'
+  let g:airline_right_sep         = ''
   let g:airline_right_alt_sep     = '«'
   let g:airline#extensions#branch#prefix     = '⎇' "➔, ➥, ⎇
   let g:airline#extensions#readonly#symbol   = '⊘'
@@ -110,9 +107,6 @@ else
 endif
 let g:tmux_navigator_disable_when_zoomed = 1
 
-" go lang
-let s:tlist_def_go_settings = 'go;g:enum;s:struct;u:union;t:type;' .
-                            \ 'v:variable;f:function'
 let g:netrw_liststyle = 3
 set autoindent  " auto-indent new lines
 set expandtab " use spaces instead of tabs
@@ -120,6 +114,7 @@ set shiftwidth=2  " number of auto-indent spaces
 set smartindent " enable smart-indent
 set smarttab  " enable smart-tabs
 set softtabstop=2 " number of spaces per Tab
+
 "*****************************************************************************
 "" Abbreviations
 "*****************************************************************************
@@ -175,8 +170,6 @@ set incsearch
 
 set backspace=indent,eol,start
 
-"set clipboard=unnamed
-
 " Disable arrows, get used to hjkl
 noremap <Left> <nop>
 noremap <Down> <nop>
@@ -191,26 +184,9 @@ inoremap <Esc> <nop>
 inoremap jk <Esc>
 inoremap kj <Esc>
 
-" Go quickfix settings
-let g:go_fmt_command = "goimports"
 map <C-n> :cnext<CR>
 map <C-m> :cprevious<CR>
 nnoremap <leader>a :cclose<CR>
-let g:go_list_type = "quickfix"
-autocmd FileType go nmap <leader>t  <Plug>(go-test)
-autocmd FileType go nmap <leader>d  :GoDoc<CR>
-autocmd FileType go nmap <leader>i  :GoDef<CR>
-" run :GoBuild or :GoTestCompile based on the go file
-function! s:build_go_files()
-  let l:file = expand('%')
-  if l:file =~# '^\f\+_test\.go$'
-    call go#cmd#Test(0, 1)
-  elseif l:file =~# '^\f\+\.go$'
-    call go#cmd#Build(0)
-  endif
-endfunction
-
-autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
 
 " Disable annoying beeping
 set noerrorbells
@@ -228,8 +204,6 @@ if $TMUX == ''
   set clipboard+=unnamed
 endif
 
-autocmd BufRead,bufnewFile *.lp set filetype=gringo
-autocmd BufRead,bufnewFile *.las set filetype=gringo
 autocmd BufRead,bufnewFile *.fs set filetype=fsharp
 
 autocmd BufRead,bufnewFile *.erb set filetype=eruby.html
@@ -242,8 +216,8 @@ let g:NERDTreeMapopeninTabSilent = '<RightMouse>'
 let g:NERDTreeWinsize = 40
 noremap <F3> :NERDTreeToggle<CR>
 
-autocmd VimEnter * NERDTree
-autocmd VimEnter * wincmd p
+" autocmd VimEnter * NERDTree
+" autocmd VimEnter * wincmd p
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 autocmd FileType typescript :set makeprg=tsc
@@ -253,13 +227,11 @@ autocmd QuickFixCmdPost    l* nested lwindow
 au BufRead,BufNewfile *.hamlc set ft=haml
 au BufRead,BufNewfile *.tex set ft=tex
 autocmd BufRead,BufNewFile *.tex setlocal spell spelllang=en_gb
-au BufWritePost *.go :GoTest
 "autocmd FileType ruby setlocal tabstop=2 shiftwidth=2 softtabstop=2
 "autocmd FileType sh setlocal tabstop=2 shiftwidth=2 softtabstop=2
 "autocmd FileType jade setlocal tabstop=2 shiftwidth=2 softtabstop=2
 "autocmd FileType javascript setlocal tabstop=2 shiftwidth=2 softtabstop=2
 "autocmd FileType java setlocal tabstop=4 shiftwidth=4 softtabstop=4
-
 autocmd FileType go setlocal tabstop=4 softtabstop=4 shiftwidth=4 noexpandtab
 
 set shell=bash
@@ -283,12 +255,17 @@ nnoremap <silent> <leader><leader> :noh<CR>
 
 nnoremap <leader>. :CtrlPTag<cr>
 source ~/.vimrc.local
+source ~/projects/advent/script/open_files.vim
 let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
 
 "" Haskell
-
-let g:syntastic_haskell_ghc_mod_exec = '/Users/egnwd/.local/bin/ghc-mod'
-map <silent> tw :GhcModTypeInsert<CR>
-map <silent> ts :GhcModSplitFunCase<CR>
-map <silent> tq :GhcModType<CR>
-map <silent> te :GhcModTypeClear<CR>
+set rtp+=~/.vim/bundle/LanguageClient-neovim
+let g:LanguageClient_serverCommands = { 'haskell': ['haskell-language-server-wrapper', '--lsp'] }
+nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+map <Leader>lk :call LanguageClient#textDocument_hover()<CR>
+map <Leader>lg :call LanguageClient#textDocument_definition()<CR>
+noremap <Leader>lr :call LanguageClient#textDocument_rename()<CR>
+map <Leader>lf :call LanguageClient#textDocument_formatting()<CR>
+map <Leader>lb :call LanguageClient#textDocument_references()<CR>
+map <Leader>la :call LanguageClient#textDocument_codeAction()<CR>
+map <Leader>ls :call LanguageClient#textDocument_documentSymbol()<CR>
