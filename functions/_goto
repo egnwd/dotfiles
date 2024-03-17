@@ -1,5 +1,4 @@
 #compdef goto
 _files -W $PROJECTS -/
-_files -W $GOPATH/src/github.com -/
 
 # See further documentation in `functions/goto`.

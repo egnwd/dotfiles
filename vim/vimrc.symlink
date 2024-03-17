@@ -46,7 +46,7 @@ Plugin 'mileszs/ack.vim'
 Plugin 'leafgarland/typescript-vim'
 Plugin 'Shougo/vimproc.vim', {'do' : 'make'}
 Plugin 'autozimu/LanguageClient-neovim', {'branch': 'next', 'do': 'bash install.sh'}
-Plugin 'ndmitchell/ghcid', { 'rtp': 'plugins/nvim' }
+" Plugin 'ndmitchell/ghcid', { 'rtp': 'plugins/nvim' }
 Plugin 'prettier/vim-prettier', {
   \ 'do': 'yarn install',
   \ 'branch': 'release/0.x'
@@ -232,7 +232,7 @@ autocmd BufRead,BufNewFile *.tex setlocal spell spelllang=en_gb
 "autocmd FileType jade setlocal tabstop=2 shiftwidth=2 softtabstop=2
 "autocmd FileType javascript setlocal tabstop=2 shiftwidth=2 softtabstop=2
 "autocmd FileType java setlocal tabstop=4 shiftwidth=4 softtabstop=4
-autocmd FileType go setlocal tabstop=4 softtabstop=4 shiftwidth=4 noexpandtab
+"autocmd FileType go setlocal tabstop=4 softtabstop=4 shiftwidth=4 noexpandtab
 
 set shell=bash
 
@@ -255,17 +255,5 @@ nnoremap <silent> <leader><leader> :noh<CR>
 
 nnoremap <leader>. :CtrlPTag<cr>
 source ~/.vimrc.local
-source ~/projects/advent/script/open_files.vim
+"" source ~/projects/advent/script/open_files.vim
 let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
-
-"" Haskell
-set rtp+=~/.vim/bundle/LanguageClient-neovim
-let g:LanguageClient_serverCommands = { 'haskell': ['haskell-language-server-wrapper', '--lsp'] }
-nnoremap <F5> :call LanguageClient_contextMenu()<CR>
-map <Leader>lk :call LanguageClient#textDocument_hover()<CR>
-map <Leader>lg :call LanguageClient#textDocument_definition()<CR>
-noremap <Leader>lr :call LanguageClient#textDocument_rename()<CR>
-map <Leader>lf :call LanguageClient#textDocument_formatting()<CR>
-map <Leader>lb :call LanguageClient#textDocument_references()<CR>
-map <Leader>la :call LanguageClient#textDocument_codeAction()<CR>
-map <Leader>ls :call LanguageClient#textDocument_documentSymbol()<CR>

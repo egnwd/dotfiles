@@ -154,8 +154,6 @@ fi
 
 echo ''
 info 'you need to:'
-info '  › install \033[00;34msicstus\033[0m'
-info '  › install \033[00;34mmatlab\033[0m'
 info '  › set up \033[00;34mssh keys\033[0m'
 info '  › set up \033[00;34mgpg keys\033[0m'
 info '  › make \033[00;34mterminal/egnwd.terminal\033[0m default'

@@ -8,5 +8,5 @@
 #
 
 if [ ! -z "$1" ]; then
-  curl $1 2> /dev/null | ramda --pretty identity
+  curl $1 2> /dev/null | jq --pretty '.'
 fi
